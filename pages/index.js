@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { ethers } from "ethers";
 import atm_abi from "../artifacts/contracts/Assessment.sol/Assessment.json";
@@ -8,6 +7,8 @@ export default function HomePage() {
   const [account, setAccount] = useState(undefined);
   const [atm, setATM] = useState(undefined);
   const [balance, setBalance] = useState(undefined);
+
+
   const [amount, setAmount] = useState("");
   const [transactions, setTransactions] = useState([]);
 
@@ -36,7 +37,7 @@ export default function HomePage() {
 
   const connectAccount = async () => {
     if (!ethWallet) {
-      alert("MetaMask wallet is required to connect");
+      alert("MetaMask wallet is required to connect!");
       return;
     }
 
@@ -53,7 +54,6 @@ export default function HomePage() {
     const provider = new ethers.providers.Web3Provider(ethWallet);
     const signer = provider.getSigner();
     const atmContract = new ethers.Contract(contractAddress, atmABI, signer);
-
     setATM(atmContract);
   };
 
@@ -72,10 +72,12 @@ export default function HomePage() {
     if (atm) {
       try {
         const transactions = await atm.getTransactionHistory();
-        setTransactions(transactions.map(tx => ({
-          ...tx,
-          timestamp: new Date(tx.timestamp * 1000).toLocaleString()
-        })));
+        setTransactions(
+          transactions.map(tx => ({
+            ...tx,
+            timestamp: new Date(tx.timestamp * 1000).toLocaleString()
+          }))
+        );
       } catch (error) {
         console.error("Error fetching transaction history:", error);
       }
@@ -158,19 +160,13 @@ export default function HomePage() {
           type="number"
           value={amount}
           onChange={handleAmountChange}
-          placeholder="Enter amount"
+          placeholder="Enter amount of ETH"
         />
-        <div><br></br></div>
+        <div><br /></div>
         <div>
-          <button className onClick={deposit}>
-            Deposit
-          </button>
-          <button className onClick={withdraw}>
-            Withdraw
-          </button>
-          <button className onClick={withdrawAll}>
-            Withdraw All
-          </button>
+          <button onClick={deposit}>Deposit</button>
+          <button onClick={withdraw}>Withdraw</button>
+          <button onClick={withdrawAll}>Withdraw All</button>
         </div>
       </div>
     );
@@ -186,12 +182,12 @@ export default function HomePage() {
   return (
     <main className="container">
       <header>
-        <h1>Welcome to the Metacrafters ATM!</h1>
+        <h3>Welcome to the The Fauna-ETH Exchange Machine!</h3>
       </header>
       {initUser()}
       {transactions.length > 0 && (
         <div className="transaction-history">
-          <h2>Transaction History</h2>
+          <h1>Transaction History</h1>
           <ul>
             {transactions.map((tx, index) => (
               <li key={index} className="transaction-item">
@@ -205,9 +201,9 @@ export default function HomePage() {
         .container {
           text-align: center;
           font-family: Arial, sans-serif;
-          padding: 20px;
-          background-color: #aaecec; /* White background for container */
-          color: #333;
+          padding: 50px;
+          background-color: #72d58a;
+          color: #000000;
           max-width: 600px;
           margin: auto;
           border-radius: 10px;
@@ -220,18 +216,18 @@ export default function HomePage() {
           margin-top: 30px;
           text-align: left;
           padding: 20px;
-          background-color: #f9f9f9; /* Light grey background for transaction history */
+          background-color: #f9f9f9;
           border-radius: 10px;
           box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
         .transaction-history ul {
           list-style-type: none;
-          padding: 0;
+          padding: 15px;
         }
         .transaction-item {
           padding: 10px;
           margin: 5px 0;
-          background-color: #fff; /* White background for transaction items */
+          background-color: #ff99ff;
           border: 1px solid #ddd;
           border-radius: 5px;
         }
